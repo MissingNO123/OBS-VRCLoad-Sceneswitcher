@@ -61,13 +61,9 @@ class LogWatcher:
         self._refresh_log_file_path()
         self.last_position = 0
         self.first_run = True
-
-    # check if VRChat is running
-    def _check_vrchat_running(self):
-        for proc in psutil.process_iter(['pid', 'name']):
-            if proc.info['name'].lower() == 'vrchat.exe':
-                return True
-        return False
+        self.vrchat_running = False
+        if not self.log_file:
+            print("Log file not found. Please check the log folder path.")
 
     # read new lines from log file since the last position
     def _read(self):
@@ -92,7 +88,7 @@ class LogWatcher:
     # now that worlds instantly start loading in the background on first click.
     # might honestly change this to an even earlier one if needed
     def _check_for_world_transition(self):
-        if not self._check_vrchat_running():
+        if not self.vrchat_running:
             return
         self._refresh_log_file_path()
         if not self.log_file:
@@ -129,10 +125,20 @@ ss = None
 log_watcher = None
 
 
-# Module-level function for timers
+# Module-level functions for timers
 def check_for_world_transition():
     if log_watcher:
         log_watcher._check_for_world_transition()
+
+
+def check_vrchat_running():
+    if log_watcher:
+        for proc in psutil.process_iter(['pid', 'name']):
+            if proc.info['name'].lower() == 'vrchat.exe':
+                log_watcher.vrchat_running = True
+                return True
+        log_watcher.vrchat_running = False
+        return False
 
 
 def script_load(settings):
@@ -145,6 +151,7 @@ def script_load(settings):
     log_watcher = LogWatcher(S.obs_data_get_string(settings, "log_folder"))
     log_watcher.update_interval_ms = S.obs_data_get_int(settings, "update_interval_ms")
     log_watcher.watch()
+    S.timer_add(check_vrchat_running, 5000)
 
 
 def script_defaults(settings):
@@ -163,12 +170,16 @@ def script_update(settings):
     ss.enabled = S.obs_data_get_bool(settings, "enabled")
     log_watcher.log_folder = S.obs_data_get_string(settings, "log_folder")
     log_watcher.update_interval_ms = S.obs_data_get_int(settings, "update_interval_ms")
+    S.timer_remove(check_for_world_transition)
+    S.timer_add(check_for_world_transition, log_watcher.update_interval_ms)
 
 
 def script_unload():
-    global log_watcher
-    if log_watcher:
-        S.timer_remove(check_for_world_transition)
+    global log_watcher, ss
+    S.timer_remove(check_for_world_transition)
+    S.timer_remove(check_vrchat_running)
+    log_watcher = None
+    ss = None
 
 
 def script_properties():  # ui
