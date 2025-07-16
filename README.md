@@ -20,4 +20,5 @@ An OBS Studio script that automatically switches scenes when entering a loading 
 5. You can disable it using the checkbox in the script's properties.
 
 ## Demo
-{soon}
+https://github.com/user-attachments/assets/74e36e11-0b14-4299-9628-157dfd953cda
+
