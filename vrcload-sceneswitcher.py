@@ -222,3 +222,6 @@ def script_properties():  # ui
     S.source_list_release(scenes)
 
     return props
+
+def script_description():
+    return "Automatically switches scenes when entering a loading screen in VRChat, and switches back when done.\nThe script will monitor the VRChat log file for events, so make sure logging is enabled."
