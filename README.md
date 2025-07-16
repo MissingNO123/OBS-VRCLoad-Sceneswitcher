@@ -9,7 +9,7 @@ Suports Windows and Linux (Proton) out of the box.
 - OBS Studio
 
 ## Installation
-1. [Download](vrcload-sceneswitcher.py) `vrcload-sceneswitcher.py` from this repository (Right-Click > Save As)
+1. Download [vrcload-sceneswitcher.py](vrcload-sceneswitcher.py) from this repository using the "Download Raw File" button.
 2. In OBS Studio, go to Tools > Scripts.
 3. Click the "+" button and add `vrcload-sceneswitcher.py`.
 
