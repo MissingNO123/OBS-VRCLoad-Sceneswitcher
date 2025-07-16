@@ -1,7 +1,7 @@
 # OBS VRC Load Scene Switcher
 
-An OBS Studio script that automatically switches to a scene when entering a loading screen in VRChat, and switches it back when done. 
-Destination scene can be whatever you want, see Demo below for an example.
+An OBS Studio script that automatically switches to a scene when entering a loading screen in VRChat, and switches it back when done.<br>
+Destination scene can be whatever you want, see Demo below for an example.<br>
 Suports Windows and Linux (Proton) out of the box.
 
 ## Requirements
